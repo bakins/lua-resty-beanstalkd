@@ -11,20 +11,20 @@ function _M.new(host, port, options)
     options = options or {}
     host = host or "127.0.0.1"
     port = port or 11300
-    local b = {
+    local self = {
         keepalive_timeout = options.keepalive_timeout,
         keepalive_pool_size = options.keepalive_pool_size,
         timeout = options.timeout,
         sock = tcp()
     }
     
-    local ok, err = sock:connect(host, port)
+    local ok, err = self.sock:connect(host, port)
     if not ok then
         return nil, err
     end
-    setmetatable(b, mt)
-    if b.timeout then
-        b:settimeout(timeout)
+    setmetatable(self, mt)
+    if self.timeout then
+        self.sock:settimeout(timeout)
     end
    
     return b
