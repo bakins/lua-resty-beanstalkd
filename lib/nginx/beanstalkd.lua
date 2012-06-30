@@ -22,16 +22,16 @@ function _M.new(host, port, options)
     if not ok then
         return nil, err
     end
-    setmetatable(self, mt)
     if self.timeout then
         self.sock:settimeout(timeout)
     end
-   
+
+    setmetatable(self, { __index = mt })
     return self
 end
 
 -- really close in case you really want to close it
-function close(self, really_close)
+function mt.close(self, really_close)
     if really_close then
         return self.sock:close()
     else
