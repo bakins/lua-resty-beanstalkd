@@ -51,6 +51,23 @@ Synopsis
         ';
     }
 
+Methods
+=======
+
+new
+---
+`syntax: b = beanstalkd:new(host, port, options)`
+
+Creates a beanstalkd object. Returns `nil` on error. Host defaults to
+_127.0.0.1_. Port defaults to _11300_. Options should be a table with
+these keys:
+
+* keepalive_timeout - timeout argument to
+  [setkeepalive](http://wiki.nginx.org/HttpLuaModule#tcpsock:setkeepalive)
+* keepalive\_pool\_size    - size argument to
+  [setkeepalive](http://wiki.nginx.org/HttpLuaModule#tcpsock:setkeepalive)
+* timeout - time argument to [settimeout](http://wiki.nginx.org/HttpLuaModule#tcpsock:settimeout)  
+
 
 TODO
 ====
