@@ -35,7 +35,11 @@ function mt.close(self, really_close)
     if really_close then
         return self.sock:close()
     else
-        --   return self.sock:setkeepalive(self.keepalive_timeout, self.keepalive_pool_size)
+        if self.keepalive_timeout or self.keepalive_pool_size then
+            return self.sock:setkeepalive(self.keepalive_timeout, self.keepalive_pool_size)
+        else
+            return self.sock:setkeepalive()
+        end
     end
 end
 
