@@ -45,3 +45,25 @@ true
 true
 --- no_error_log
 [error]
+
+=== TEST 1: put and delete simple string with tube
+--- http_config eval: $::HttpConfig
+--- config
+    location /t {
+        content_by_lua '
+            local beanstalkd = require "nginx.beanstalkd"
+            local b = beanstalkd.new(nil, nil, { tube ="bar" })
+            local ok, id, err = b:put("foo")
+            ngx.say(ok)
+            ok, err = b:delete(id)
+            ngx.say(ok)
+            b:close()
+        ';
+    }
+--- request
+GET /t
+--- response_body
+true
+true
+--- no_error_log
+[error]
