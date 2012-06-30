@@ -7,7 +7,10 @@ local mt = {}
 local tcp = ngx.socket.tcp
 local find = string.find
 
-function _M.new(self, options)
+function _M.new(host, port, options)
+    options = options or {}
+    host = host or "127.0.0.1"
+    port = port or 11300
     local b = {
         keepalive_timeout = options.keepalive_timeout,
         keepalive_pool_size = options.keepalive_pool_size,
@@ -15,6 +18,10 @@ function _M.new(self, options)
         sock = tcp()
     }
     
+    local ok, err = sock:connect(host, port)
+    if not ok then
+        return nil, err
+    end
     setmetatable(b, mt)
     if b.timeout then
         b:settimeout(timeout)
@@ -23,28 +30,12 @@ function _M.new(self, options)
     return b
 end
 
-function mt.settimeout(self, timeout)
-    return self.sock:settimeout(timeout)
-end
-
-function mt.connect(self, ...)
-    return self.sock:connect(...)
-end
-
-function mt.setkeepalive(self, ...)
-    return self.sock:setkeepalive(...)
-end
-
-function mt.getreusedtimes(self)
-    return self.sock:getreusedtimes()
-end
-
 -- really close in case you really want to close it
 function close(self, really_close)
     if really_close then
         return self.sock:close()
     else
-        return self:setkeepalive(self.keepalive_timeout, self.keepalive_pool_size)
+        return self.sock:setkeepalive(self.keepalive_timeout, self.keepalive_pool_size)
     end
 end
 
