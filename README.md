@@ -28,7 +28,7 @@ This Lua library is a beanstalkd client driver for the [ngx_lua nginx module](ht
 This Lua library takes advantage of ngx_lua's cosocket API, which ensures
 100% nonblocking behavior.
 
-Note that at least [ngx_lua 0.5.0rc29](https://github.com/chaoslawful/lua-nginx-module/tags) or [ngx_openresty 1.0.15.7](http://openresty.org/#Download) is required.
+Note that at least [ngx\_lua 0.5.0rc29](https://github.com/chaoslawful/lua-nginx-module/tags) or [ngx\_openresty 1.0.15.7](http://openresty.org/#Download) is required.
 
 This library does not follow the general interface that other nginx
 resty modules use.  The interface is simplified (in the author's
