@@ -24,7 +24,7 @@ run_tests();
 
 __DATA__
 
-=== TEST 1: put a simple string
+=== TEST 1: put and delete simple string
 --- http_config eval: $::HttpConfig
 --- config
     location /t {
@@ -33,12 +33,15 @@ __DATA__
             local b = beanstalkd.new()
             local ok, id, err = b:put("foo")
             ngx.say(ok)
+            ok, err = b:delete(id)
+            ngx.say(ok)
             b:close()
         ';
     }
 --- request
 GET /t
 --- response_body
+true
 true
 --- no_error_log
 [error]
