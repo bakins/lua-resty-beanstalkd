@@ -27,7 +27,7 @@ function _M.new(host, port, options)
         self.sock:settimeout(timeout)
     end
    
-    return b
+    return self
 end
 
 -- really close in case you really want to close it
