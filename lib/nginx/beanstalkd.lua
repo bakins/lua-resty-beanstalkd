@@ -68,4 +68,22 @@ function mt.put(self, body, pri, delay, ttr)
     end
 end
 
+function mt.delete(self, id)
+    local sock = self.sock
+    local cmd =  {"delete ", id, "\r\n" }
+    local bytes, err = sock:send(cmd)
+    if not bytes then
+        return nil, err
+    end
+    local line, err = sock:receive()
+    if not line then
+         return nil, err
+    end
+    
+    if "DELETED" == line then
+        return true, line
+    end
+    return false, line
+end
+
 return _M
