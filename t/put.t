@@ -31,7 +31,7 @@ __DATA__
         content_by_lua '
             local beanstalkd = require "nginx.beanstalkd"
             local b = beanstalkd.new()
-            local ok, err = b:put("foo")
+            local ok, id, err = b:put("foo")
             ngx.say(ok)
             b:close()
         ';
