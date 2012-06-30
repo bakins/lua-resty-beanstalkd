@@ -7,6 +7,29 @@ local mt = {}
 local tcp = ngx.socket.tcp
 local match, concat = string.match, table.concat
 
+
+-- the issue as currently implemented is if we get a keepalive connection
+-- and we had specified a tube on it, but do not on this client, then we will
+-- still be interacting with the tube that was set on the keepalive connection
+-- so, don't use it as it is dangerous if you do not know this
+local function use(self, tube)
+    local sock = self.sock
+    local cmd =  {"use ", tube, "\r\n" }
+    local bytes, err = sock:send(cmd)
+    if not bytes then
+        return nil, err
+    end
+    local line, err = sock:receive()
+    if not line then
+        return nil, err
+    end
+    
+    if ("USING " .. tube) ~= line then
+        return nil, line
+    end
+    return true
+end
+
 function _M.new(host, port, options)
     options = options or {}
     host = host or "127.0.0.1"
@@ -15,6 +38,7 @@ function _M.new(host, port, options)
         keepalive_timeout = options.keepalive_timeout,
         keepalive_pool_size = options.keepalive_pool_size,
         timeout = options.timeout,
+        tube = options.tube or "default",
         sock = tcp()
     }
     
@@ -24,6 +48,13 @@ function _M.new(host, port, options)
     end
     if self.timeout then
         self.sock:settimeout(timeout)
+    end
+
+    if "default" ~= self.tube then
+        local ok, err = use(self, self.tube)
+        if not ok then
+            return nil, ("error using tube: " .. err)
+        end
     end
 
     setmetatable(self, { __index = mt })
