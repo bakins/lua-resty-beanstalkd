@@ -49,23 +49,23 @@ function mt.put(self, body, pri, delay, ttr)
     
     local cmd =  {"put ", pri, " ", delay, " ", ttr, " ", #body, "\r\n", body, "\r\n" }
     local bytes, err = sock:send(cmd)
-     if not bytes then
+    if not bytes then
         return nil, err
-     end
-     local line, err = sock:receive()
-     if not line then
+    end
+    local line, err = sock:receive()
+    if not line then
          return nil, err
-     end
-     
-     local status, id = match(line, '(%u+)%s+(%d+)$')
-     if not status then
-         return nil, nil, line
-     end
-     if "INSERTED" == status then
-         return true, id, status
-     else
-         return false, id, status
-     end
- end
+    end
+    
+    local status, id = match(line, '(%u+)%s+(%d+)$')
+    if not status then
+        return nil, nil, line
+    end
+    if "INSERTED" == status then
+        return true, id, status
+    else
+        return false, id, status
+    end
+end
 
 return _M
