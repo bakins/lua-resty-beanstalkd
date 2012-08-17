@@ -4,11 +4,11 @@ Name
 lua-resty-beanstalkd - Lua beanstalkd client driver for the ngx_lua
 based on the cosocket API
 
-Originally based on the
+Based on the
 [lua-resty-memcached](https://github.com/agentzh/lua-resty-memcached)
 library.
 
-Influence by [beanstalk-client-ruby](https://github.com/kr/beanstalk-client-ruby)
+Influenced by [beanstalk-client-ruby](https://github.com/kr/beanstalk-client-ruby)
 
 Status
 ======
@@ -50,7 +50,7 @@ Synopsis
                 ngx.say(ok)
                 ok, err = b:delete(id)
                 ngx.say(ok)
-               b:close()
+                b:close()
             ';
         }
     }
@@ -81,7 +81,9 @@ put
 ---
 `syntax: ok, id, err = b:put(body, pri, delay, ttr)`
 
-Inserts a job into the queue.  _body_ should be a string.
+Inserts a job into the queue. 
+
+ _body_ should be a string.
 
 _pri_ is the priority and defaults to 65536
 
@@ -93,7 +95,7 @@ In case of success, returns `true` and the job id.  On error, it will
 return `false`, `nil`, and an error message.
 
 delete
----
+-----
 `syntax: ok, id, err = b:delete(id)`
 
 Deletes a job from the queue.
