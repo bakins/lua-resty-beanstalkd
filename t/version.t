@@ -29,9 +29,9 @@ __DATA__
 --- config
     location /t {
         content_by_lua '
-local beanstalk = require "nginx.beanstalkd"
-ngx.say(beanstalk._VERSION)
-';
+        local beanstalk = require "resty.beanstalkd"
+        ngx.say(beanstalk._VERSION)
+        ';
     }
 --- request
     GET /t
