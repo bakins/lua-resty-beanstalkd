@@ -154,7 +154,9 @@ each request.
 TODO
 ====
 
-* Support the `use` command
+* Support the `use` command. We may not want to do a round trip each
+  time, so could we use socket pools and only issue a `use` when
+  get_reusedtimes returns 0?
 
 Author
 ======
