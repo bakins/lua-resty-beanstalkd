@@ -12,7 +12,7 @@ function _M.new()
     if not sock then
         return nil, err
     end
-    return setmetatable({ sock = sock }, mt)
+    return setmetatable({ sock = sock }, { __index = mt })
 end
 
 function mt.set_timeout(self, timeout)
