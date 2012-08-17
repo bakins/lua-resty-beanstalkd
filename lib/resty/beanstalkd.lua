@@ -24,13 +24,15 @@ function set_timeout(self, timeout)
     return sock:settimeout(timeout)
 end
 
-function connect(self, ...)
+function connect(self, host, port, ...)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
     end
 
-    return sock:connect(...)
+    host = host or "127.0.0.1"
+    port = port or 11300
+    return sock:connect(host, port, ...)
 end
 
 function set_keepalive(self, ...)
