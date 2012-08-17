@@ -7,7 +7,7 @@ local mt = {}
 local tcp = ngx.socket.tcp
 local match, concat = string.match, table.concat
 
-function new()
+function _M.new()
     local sock, err = tcp()
     if not sock then
         return nil, err
@@ -15,7 +15,7 @@ function new()
     return setmetatable({ sock = sock }, mt)
 end
 
-function set_timeout(self, timeout)
+function mt.set_timeout(self, timeout)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
@@ -24,7 +24,7 @@ function set_timeout(self, timeout)
     return sock:settimeout(timeout)
 end
 
-function connect(self, host, port, ...)
+function mt.connect(self, host, port, ...)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
@@ -35,7 +35,7 @@ function connect(self, host, port, ...)
     return sock:connect(host, port, ...)
 end
 
-function set_keepalive(self, ...)
+function mt.set_keepalive(self, ...)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
@@ -45,7 +45,7 @@ function set_keepalive(self, ...)
 end
 
 
-function get_reused_times(self)
+function mt.get_reused_times(self)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
@@ -54,7 +54,7 @@ function get_reused_times(self)
     return sock:getreusedtimes()
 end
 
-function close(self)
+function mt.close(self)
     local sock = self.sock
     if not sock then
         return nil, "not initialized"
