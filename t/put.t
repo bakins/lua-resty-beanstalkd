@@ -29,8 +29,13 @@ __DATA__
 --- config
     location /t {
         content_by_lua '
-            local beanstalkd = require "nginx.beanstalkd"
+            local beanstalkd = require "resty.beanstalkd"
             local b = beanstalkd.new()
+            local ok, err = b:connect()
+            if not ok then
+                ngx.say("failed to connect: ", err)
+                return
+            end
             local ok, id, err = b:put("foo")
             ngx.say(ok)
             ok, err = b:delete(id)
@@ -51,8 +56,13 @@ true
 --- config
     location /t {
         content_by_lua '
-            local beanstalkd = require "nginx.beanstalkd"
-            local b = beanstalkd.new(nil, nil, { tube ="bar" })
+            local beanstalkd = require "resty.beanstalkd"
+            local b = beanstalkd.new()
+            local ok, err = b:connect()
+            if not ok then
+                ngx.say("failed to connect: ", err)
+                return
+            end
             local ok, id, err = b:put("foo")
             ngx.say(ok)
             ok, err = b:delete(id)
